@@ -3,7 +3,7 @@
  
  
  function DataBody(props) {
-    return this.state.employees.map((employee) => {
+    return props.employees.map((employee) => {
       const { first, last } = employee.name;
       const fullName = `${first} ${last}`;
       const { id } = employee; //destructuring

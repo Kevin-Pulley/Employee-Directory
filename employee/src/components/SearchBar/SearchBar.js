@@ -7,19 +7,16 @@ function SearchBar(props) {
       <div className="searchBar">
         <form className="form-inline">
             <input
-            value={props.search}
+            value={props.value}
             onChange={props.handleInputChange}
             className="form-control mr-sm-2"
             type="search"
             placeholder="Search"
             aria-label="Search"
            />
-           <button className="btn my-2 my-sm-0" type="submit">
+           {/* <button className="btn my-2 my-sm-0" type="submit">
             Search
-           </button>
-            
-            
-
+           </button> */}
         </form>
       </div>
     );

@@ -1,22 +1,23 @@
 import React, { Component } from "react";
 import API from "../../utils/API";
-import DataBody from "../DataBody/DataBody"
-
+import DataBody from "../DataBody/DataBody";
+import SearchBar from "../SearchBar/SearchBar";
 
 class DataTable extends Component {
   state = {
     search: "",
     employees: [],
-    filterEmployees: [],
   };
+
+  initialEmployees;
 
   componentDidMount() {
     API.getEmployees()
       .then((res) => {
         console.log(res);
+        this.initialEmployees = res.data.results;
         this.setState({
           employees: res.data.results,
-          filterEmployees: res.data.results,
         });
       })
 
@@ -26,8 +27,8 @@ class DataTable extends Component {
   //console.log(res)
 
   handleInputChange = (event) => {
-    const value = event.target.value;
-    this.setState({ search: value });
+    let value = event.target.value;
+    //this.setState({ search: value });
     this.filterEmployees(value.toLowerCase().trim());
   };
 
@@ -35,13 +36,50 @@ class DataTable extends Component {
     event.preventDefault();
   };
 
- 
+  filterEmployees = (input) => {
+    this.setState({
+      employees: this.initialEmployees.filter((employee) => {
+        if (
+          employee.name.first.toLowerCase().includes(input) ||
+          employee.name.last.toLowerCase().includes(input)
+        ) {
+          return employee;
+        }
+      }),
+    });
+  };
+
+  sortNames = () => {
+    console.log("sortNames function");
+    let sortedEmployees = this.state.employees;
+    console.log(sortedEmployees);
+    sortedEmployees.sort(function (a, b) {
+      let nameA = a.name.first.toUpperCase();
+      let nameB = b.name.first.toUpperCase();
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0;
+    });
+    this.setState({ employees: sortedEmployees });
+    console.log(this.state);
+  };
 
   render() {
     return (
       <div>
+        <SearchBar
+          value={this.state.value}
+          handleFormSubmit={this.handleFormSubmit}
+          handleInputChange={this.handleInputChange}
+        />
         <table id="employees">
-          <tbody><DataBody/></tbody>
+          <tbody>
+            <DataBody employees={this.state.employees} />
+          </tbody>
         </table>
       </div>
     );
