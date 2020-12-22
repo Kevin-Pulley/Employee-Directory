@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import API from "../../utils/API";
 import DataBody from "../DataBody/DataBody";
 import SearchBar from "../SearchBar/SearchBar";
+import TableHeader from "../TableHeader/TableHeader"
 
 class DataTable extends Component {
   state = {
@@ -50,7 +51,6 @@ class DataTable extends Component {
   };
 
   sortNames = () => {
-    console.log("sortNames function");
     let sortedEmployees = this.state.employees;
     console.log(sortedEmployees);
     sortedEmployees.sort(function (a, b) {
@@ -70,13 +70,17 @@ class DataTable extends Component {
 
   render() {
     return (
-      <div>
+      <div className="data-area">
         <SearchBar
           value={this.state.value}
           handleFormSubmit={this.handleFormSubmit}
           handleInputChange={this.handleInputChange}
         />
         <table id="employees">
+          <TableHeader 
+          name={this.sortNames}
+          />
+
           <tbody>
             <DataBody employees={this.state.employees} />
           </tbody>
